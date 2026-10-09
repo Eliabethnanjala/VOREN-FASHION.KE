@@ -1,0 +1,46 @@
+.hero {
+  padding: var(--space-5) 0;
+  text-align: center;
+  background: var(--color-sand);
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  margin-bottom: var(--space-2);
+}
+.hero p {
+  max-width: 480px;
+  margin: 0 auto var(--space-3);
+}
+.section {
+  padding: var(--space-5) 0;
+}
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: var(--space-4);
+}
+.img-placeholder {
+  aspect-ratio: 3 / 4;
+  background: var(--color-sand);
+}
+.cart-link {
+  position: relative;
+}
+.footer {
+  padding: var(--space-4) 0;
+  text-align: center;
+  background: var(--color-brown);
+  color: var(--color-cream);
+  font-size: 0.9rem;
+}
+.whatsapp-float {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: #25D366;
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
