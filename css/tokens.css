@@ -1,0 +1,23 @@
+:root {
+  /* Colors */
+  --color-cream: #F5EFE6;
+  --color-sand: #E8DCC8;
+  --color-rust: #B5502B;
+  --color-brown: #2B1B14;
+  --color-white: #FFFFFF;
+
+  /* Fonts */
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Spacing */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+
+  /* Shape */
+  --radius: 4px;
+  --max-width: 1200px;
+}
