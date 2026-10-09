@@ -1,0 +1,96 @@
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-rust);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.btn-primary {
+  background: var(--color-rust);
+  color: var(--color-white);
+}
+.btn-primary:hover {
+  background: var(--color-brown);
+  border-color: var(--color-brown);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--color-rust);
+}
+.btn-outline:hover {
+  background: var(--color-rust);
+  color: var(--color-white);
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-cream);
+  border-bottom: 1px solid var(--color-sand);
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  letter-spacing: 0.15em;
+}
+.nav-links {
+  display: flex;
+  gap: var(--space-3);
+  font-size: 0.9rem;
+}
+.nav-links a:hover {
+  color: var(--color-rust);
+}
+
+/* Product card */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+}
+.product-card img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: var(--color-sand);
+}
+.product-card h3 {
+  font-size: 1.2rem;
+  margin-top: var(--space-1);
+}
+.product-card .price {
+  color: var(--color-rust);
+  font-weight: 500;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  background: var(--color-rust);
+  color: var(--color-white);
+  border-radius: var(--radius);
+}
