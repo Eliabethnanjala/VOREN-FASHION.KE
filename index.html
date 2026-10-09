@@ -7,9 +7,68 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-  <h1>VOREN FASHION.KE</h1>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">VOREN</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Wear the Story</h1>
+      <p>Timeless pieces made in Kenya. Discover the new collection.</p>
+      <a href="shop.html" class="btn btn-primary">Shop Now</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">New Arrivals</h2>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="img-placeholder"></div>
+          <h3>Product Name</h3>
+          <p class="price">KES 2,500</p>
+        </article>
+        <article class="product-card">
+          <div class="img-placeholder"></div>
+          <h3>Product Name</h3>
+          <p class="price">KES 3,200</p>
+        </article>
+        <article class="product-card">
+          <div class="img-placeholder"></div>
+          <h3>Product Name</h3>
+          <p class="price">KES 1,800</p>
+        </article>
+        <article class="product-card">
+          <div class="img-placeholder"></div>
+          <h3>Product Name</h3>
+          <p class="price">KES 4,000</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="contact">
+    <div class="container">
+      <p>&copy; 2026 VOREN FASHION.KE. Nairobi, Kenya.</p>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/254702590668?text=Hi%20VOREN,%20I'd%20like%20to%20order" target="_blank" rel="noopener">WhatsApp</a>
+
+  <script src="js/cart.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
