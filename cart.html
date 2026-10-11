@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart | VOREN.KE</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/cart.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">VOREN</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Your Cart</h1>
+    <div id="cart-items"></div>
+    <div class="cart-summary" id="cart-summary">
+      <p class="total">Total: <span id="cart-total">KES 0</span></p>
+      <a id="whatsapp-order" class="btn btn-primary" target="_blank" rel="noopener" href="#">Order via WhatsApp</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p>&copy; 2026 VOREN.KE. Nairobi, Kenya.</p></div>
+  </footer>
+
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    var PHONE = "254702590668";
+    var box = document.querySelector("#cart-items");
+
+    function money(n) {
+      return "KES " + n.toLocaleString("en-KE");
+    }
+
+    function renderCart() {
+      var cart = getCart();
+      var summary = document.querySelector("#cart-summary");
+
+      if (!cart.length) {
+        box.innerHTML = '<p class="empty">Your cart is empty. <a href="shop.html" style="color:var(--color-rust)">Continue shopping</a></p>';
+        summary.style.display = "none";
+        return;
+      }
+
+      summary.style.display = "block";
+      var html = "";
+      var msg = "Hi VOREN, I'd like to order:\n";
+
+      cart.forEach(function (item) {
+        html += '<div class="cart-row">' +
+          '<div><h3>' + item.name + '</h3><p>Size: ' + item.size + '</p></div>' +
+          '<div>Qty: ' + item.qty + '</div>' +
+          '<div class="price">' + money(item.price * item.qty) + '</div>' +
+          '<button class="btn btn-outline btn-small" data-id="' + item.id + '" data-size="' + item.size + '">Remove</button>' +
+          '</div>';
+        msg += "- " + item.name + " (" + item.size + ") x" + item.qty + " = " + money(item.price * item.qty) + "\n";
+      });
+
+      msg += "Total: " + money(cartTotal());
+      box.innerHTML = html;
+      document.querySelector("#cart-total").textContent = money(cartTotal());
+      document.querySelector("#whatsapp-order").href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+    }
+
+    box.addEventListener("click", function (e) {
+      var btn = e.target.closest("button[data-id]");
+      if (!btn) return;
+      removeFromCart(Number(btn.dataset.id), btn.dataset.size);
+      renderCart();
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>
