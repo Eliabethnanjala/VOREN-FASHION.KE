@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product | VOREN FASHION.KE</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/product.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">VOREN</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="product-page"></main>
+
+  <footer class="footer">
+    <div class="container"><p>&copy; 2026 VOREN.KE. Nairobi, Kenya.</p></div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    var PHONE = "254702590668";
+    var page = document.querySelector("#product-page");
+    var id = Number(new URLSearchParams(window.location.search).get("id"));
+    var product = PRODUCTS.find(function (p) { return p.id === id; });
+    var selectedSize = null;
+
+    function money(n) {
+      return "KES " + n.toLocaleString("en-KE");
+    }
+
+    if (!product) {
+      page.innerHTML = '<p class="empty">Product not found. <a href="shop.html" style="color:var(--color-rust)">Back to shop</a></p>';
+    } else {
+      var img = product.image ? '<img src="' + product.image + '" alt="' + product.name + '">' : '<div class="img-placeholder"></div>';
+      var sizes = "";
+      product.sizes.forEach(function (s) {
+        sizes += '<button class="size-btn" data-size="' + s + '">' + s + '</button>';
+      });
+      var ask = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Hi VOREN, I'm interested in: " + product.name);
+
+      page.innerHTML = '<div class="product-detail">' + img +
+        '<div class="product-info">' +
+        '<p>' + product.category + '</p>' +
+        '<h1>' + product.name + '</h1>' +
+        '<p class="price">' + money(product.price) + '</p>' +
+        '<p class="size-label">Select size</p>' +
+        '<div class="size-options" id="size-options">' + sizes + '</div>' +
+        '<div class="product-actions">' +
+        '<button class="btn btn-primary" id="add-btn">Add to cart</button>' +
+        '<a class="btn btn-outline" target="_blank" rel="noopener" href="' + ask + '">Ask on WhatsApp</a>' +
+        '</div>' +
+        '<p id="msg" style="margin-top:1rem;color:var(--color-rust)"></p>' +
+        '</div></div>';
+
+      document.querySelector("#size-options").addEventListener("click", function (e) {
+        var btn = e.target.closest(".size-btn");
+        if (!btn) return;
+        selectedSize = btn.dataset.size;
+        document.querySelectorAll(".size-btn").forEach(function (b) {
+          b.classList.toggle("active", b === btn);
+        });
+      });
+
+      document.querySelector("#add-btn").addEventListener("click", function () {
+        var msg = document.querySelector("#msg");
+        if (!selectedSize) {
+          msg.textContent = "Please select a size first.";
+          return;
+        }
+        addToCart({ id: product.id, name: product.name, price: product.price, size: selectedSize });
+        msg.textContent = "Added to cart (size " + selectedSize + ") ✓";
+      });
+    }
+  </script>
+</body>
+</html>
