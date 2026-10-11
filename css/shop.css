@@ -1,0 +1,30 @@
+.page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  padding: var(--space-4) 0 var(--space-2);
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+.filter-btn {
+  padding: 0.5rem 1.2rem;
+  font-family: var(--font-body);
+  background: transparent;
+  border: 1px solid var(--color-sand);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.filter-btn.active {
+  background: var(--color-rust);
+  border-color: var(--color-rust);
+  color: var(--color-white);
+}
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  margin-top: var(--space-1);
+}
