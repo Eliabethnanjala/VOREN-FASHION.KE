@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt | VOREN FASHION.KE</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/receipt.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">VOREN</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="receipt-box"></div>
+    <div class="receipt-actions" id="actions" style="display:none">
+      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <a class="btn btn-outline" id="wa-link" target="_blank" rel="noopener" href="#">Send order on WhatsApp</a>
+      <a class="btn btn-outline" href="shop.html">Continue shopping</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p>&copy; 2026 VOREN FASHION.KE. Nairobi, Kenya.</p></div>
+  </footer>
+
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    var PHONE = "254702590668";
+    var box = document.querySelector("#receipt-box");
+    var order = JSON.parse(localStorage.getItem("voren_last_order"));
+
+    function money(n) {
+      return "KES " + n.toLocaleString("en-KE");
+    }
+
+    if (!order) {
+      box.innerHTML = '<p class="empty">No recent order found. <a href="shop.html" style="color:var(--color-rust)">Go to shop</a></p>';
+    } else {
+      var status = order.pay === "M-Pesa" ? "Pending payment (M-Pesa)" : "Pay on delivery";
+      var rows = "";
+      var msg = "New order " + order.id + " from VOREN FASHION.KE\n\n";
+
+      order.items.forEach(function (i) {
+        rows += '<div class="line"><span>' + i.name + ' (' + i.size + ') x' + i.qty + '</span><span>' + money(i.price * i.qty) + '</span></div>';
+        msg += "- " + i.name + " (" + i.size + ") x" + i.qty + " = " + money(i.price * i.qty) + "\n";
+      });
+
+      msg += "\nSubtotal: " + money(order.subtotal) + "\nDelivery: " + money(order.fee) + "\nTOTAL: " + money(order.total);
+      msg += "\n\nName: " + order.name + "\nPhone: " + order.phone + "\nArea: " + order.area + "\nAddress: " + order.address + "\nPayment: " + order.pay;
+
+      box.innerHTML = '<div class="receipt">' +
+        '<h1>VOREN.KE</h1><p class="sub">Order Receipt</p>' +
+        '<div class="meta"><p><strong>Order no:</strong> ' + order.id + '</p>' +
+        '<p><strong>Date:</strong> ' + order.date + '</p>' +
+        '<p><strong>Status:</strong> ' + status + '</p></div>' +
+        '<div class="meta"><p><strong>Customer:</strong> ' + order.name + '</p>' +
+        '<p><strong>Phone:</strong> ' + order.phone + '</p>' +
+        '<p><strong>Delivery:</strong> ' + order.area + ', ' + order.address + '</p></div>' +
+        rows +
+        '<div class="line"><span>Subtotal</span><span>' + money(order.subtotal) + '</span></div>' +
+        '<div class="line"><span>Delivery</span><span>' + money(order.fee) + '</span></div>' +
+        '<div class="line grand"><span>Total</span><span>' + money(order.total) + '</span></div>' +
+        '<p class="sub" style="margin-top:1.5rem">Thank you for shopping with VOREN.KE</p></div>';
+
+      document.querySelector("#wa-link").href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+      document.querySelector("#actions").style.display = "flex";
+    }
+  </script>
+</body>
+</html>
