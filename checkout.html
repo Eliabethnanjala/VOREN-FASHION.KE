@@ -1,0 +1,129 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | VOREN FASHION.KE</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">VOREN</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Checkout</h1>
+    <div class="checkout-layout">
+
+      <div>
+        <p class="error" id="error"></p>
+        <div class="form-group"><label for="name">Full name</label><input id="name" type="text"></div>
+        <div class="form-group"><label for="phone">Phone (M-Pesa number)</label><input id="phone" type="tel" placeholder="07XX XXX XXX"></div>
+        <div class="form-group">
+          <label for="area">Delivery area</label>
+          <select id="area">
+            <option value="200">Nairobi CBD - KES 200</option>
+            <option value="300">Nairobi estates - KES 300</option>
+            <option value="500">Outside Nairobi - KES 500</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="address">Address / landmark</label><textarea id="address" rows="3"></textarea></div>
+        <div class="form-group">
+          <label for="pay">Payment method</label>
+          <select id="pay">
+            <option>M-Pesa</option>
+            <option>Pay on Delivery</option>
+          </select>
+        </div>
+      </div>
+
+      <aside class="order-box">
+        <h3>Order summary</h3>
+        <div id="summary-items"></div>
+        <div class="line"><span>Subtotal</span><span id="subtotal"></span></div>
+        <div class="line"><span>Delivery</span><span id="delivery"></span></div>
+        <div class="line grand"><span>Total</span><span id="grand"></span></div>
+        <button class="btn btn-primary" id="place-order" style="width:100%;margin-top:1rem">Place order</button>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p>&copy; 2026 VOREN FASHION.KE. Nairobi, Kenya.</p></div>
+  </footer>
+
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    var PHONE = "254702590668";
+    var cart = getCart();
+
+    function money(n) {
+      return "KES " + n.toLocaleString("en-KE");
+    }
+
+    if (!cart.length) {
+      window.location.href = "cart.html";
+    }
+
+    function renderSummary() {
+      var html = "";
+      cart.forEach(function (i) {
+        html += '<div class="line"><span>' + i.name + ' (' + i.size + ') x' + i.qty + '</span><span>' + money(i.price * i.qty) + '</span></div>';
+      });
+      var fee = Number(document.querySelector("#area").value);
+      document.querySelector("#summary-items").innerHTML = html;
+      document.querySelector("#subtotal").textContent = money(cartTotal());
+      document.querySelector("#delivery").textContent = money(fee);
+      document.querySelector("#grand").textContent = money(cartTotal() + fee);
+    }
+
+    document.querySelector("#area").addEventListener("change", renderSummary);
+
+    document.querySelector("#place-order").addEventListener("click", function () {
+      var name = document.querySelector("#name").value.trim();
+      var phone = document.querySelector("#phone").value.trim();
+      var address = document.querySelector("#address").value.trim();
+      var areaSelect = document.querySelector("#area");
+      var areaText = areaSelect.options[areaSelect.selectedIndex].text;
+      var fee = Number(areaSelect.value);
+      var pay = document.querySelector("#pay").value;
+      var err = document.querySelector("#error");
+
+      if (!name || !phone || !address) {
+        err.textContent = "Please fill in your name, phone and address.";
+        return;
+      }
+      err.textContent = "";
+
+      var msg = "New order from VOREN FASHION.KE\n\n";
+      cart.forEach(function (i) {
+        msg += "- " + i.name + " (" + i.size + ") x" + i.qty + " = " + money(i.price * i.qty) + "\n";
+      });
+      msg += "\nSubtotal: " + money(cartTotal());
+      msg += "\nDelivery: " + money(fee);
+      msg += "\nTOTAL: " + money(cartTotal() + fee);
+      msg += "\n\nName: " + name + "\nPhone: " + phone + "\nArea: " + areaText + "\nAddress: " + address + "\nPayment: " + pay;
+
+      window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank");
+    });
+
+    renderSummary();
+  </script>
+</body>
+</html>
