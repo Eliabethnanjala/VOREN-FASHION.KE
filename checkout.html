@@ -70,60 +70,69 @@
   <script src="js/cart.js"></script>
   <script src="js/main.js"></script>
   <script>
-    var PHONE = "254702590668";
-    var cart = getCart();
+  var cart = getCart();
 
-    function money(n) {
-      return "KES " + n.toLocaleString("en-KE");
-    }
+  function money(n) {
+    return "KES " + n.toLocaleString("en-KE");
+  }
 
-    if (!cart.length) {
-      window.location.href = "cart.html";
-    }
+  if (!cart.length) {
+    window.location.href = "cart.html";
+  }
 
-    function renderSummary() {
-      var html = "";
-      cart.forEach(function (i) {
-        html += '<div class="line"><span>' + i.name + ' (' + i.size + ') x' + i.qty + '</span><span>' + money(i.price * i.qty) + '</span></div>';
-      });
-      var fee = Number(document.querySelector("#area").value);
-      document.querySelector("#summary-items").innerHTML = html;
-      document.querySelector("#subtotal").textContent = money(cartTotal());
-      document.querySelector("#delivery").textContent = money(fee);
-      document.querySelector("#grand").textContent = money(cartTotal() + fee);
-    }
-
-    document.querySelector("#area").addEventListener("change", renderSummary);
-
-    document.querySelector("#place-order").addEventListener("click", function () {
-      var name = document.querySelector("#name").value.trim();
-      var phone = document.querySelector("#phone").value.trim();
-      var address = document.querySelector("#address").value.trim();
-      var areaSelect = document.querySelector("#area");
-      var areaText = areaSelect.options[areaSelect.selectedIndex].text;
-      var fee = Number(areaSelect.value);
-      var pay = document.querySelector("#pay").value;
-      var err = document.querySelector("#error");
-
-      if (!name || !phone || !address) {
-        err.textContent = "Please fill in your name, phone and address.";
-        return;
-      }
-      err.textContent = "";
-
-      var msg = "New order from VOREN FASHION.KE\n\n";
-      cart.forEach(function (i) {
-        msg += "- " + i.name + " (" + i.size + ") x" + i.qty + " = " + money(i.price * i.qty) + "\n";
-      });
-      msg += "\nSubtotal: " + money(cartTotal());
-      msg += "\nDelivery: " + money(fee);
-      msg += "\nTOTAL: " + money(cartTotal() + fee);
-      msg += "\n\nName: " + name + "\nPhone: " + phone + "\nArea: " + areaText + "\nAddress: " + address + "\nPayment: " + pay;
-
-      window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg), "_blank");
+  function renderSummary() {
+    var html = "";
+    cart.forEach(function (i) {
+      html += '<div class="line"><span>' + i.name + ' (' + i.size + ') x' + i.qty + '</span><span>' + money(i.price * i.qty) + '</span></div>';
     });
+    var fee = Number(document.querySelector("#area").value);
+    document.querySelector("#summary-items").innerHTML = html;
+    document.querySelector("#subtotal").textContent = money(cartTotal());
+    document.querySelector("#delivery").textContent = money(fee);
+    document.querySelector("#grand").textContent = money(cartTotal() + fee);
+  }
 
-    renderSummary();
-  </script>
+  function pad(n) {
+    return n < 10 ? "0" + n : "" + n;
+  }
+
+  document.querySelector("#area").addEventListener("change", renderSummary);
+
+  document.querySelector("#place-order").addEventListener("click", function () {
+    var name = document.querySelector("#name").value.trim();
+    var phone = document.querySelector("#phone").value.trim();
+    var address = document.querySelector("#address").value.trim();
+    var areaSelect = document.querySelector("#area");
+    var err = document.querySelector("#error");
+
+    if (!name || !phone || !address) {
+      err.textContent = "Please fill in your name, phone and address.";
+      return;
+    }
+    err.textContent = "";
+
+    var d = new Date();
+    var fee = Number(areaSelect.value);
+    var order = {
+      id: "VOR-" + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + "-" + Math.floor(1000 + Math.random() * 9000),
+      date: d.toLocaleString("en-KE"),
+      items: cart,
+      subtotal: cartTotal(),
+      fee: fee,
+      total: cartTotal() + fee,
+      name: name,
+      phone: phone,
+      area: areaSelect.options[areaSelect.selectedIndex].text,
+      address: address,
+      pay: document.querySelector("#pay").value
+    };
+
+    localStorage.setItem("voren_last_order", JSON.stringify(order));
+    localStorage.removeItem("voren_cart");
+    window.location.href = "receipt.html";
+  });
+
+  renderSummary();
+</script>
 </body>
 </html>
