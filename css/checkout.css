@@ -1,0 +1,44 @@
+.checkout-layout {
+  display: grid;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+}
+@media (min-width: 768px) {
+  .checkout-layout { grid-template-columns: 3fr 2fr; }
+}
+.form-group { margin-bottom: var(--space-2); }
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-sand);
+  border-radius: var(--radius);
+}
+.order-box {
+  background: var(--color-white);
+  border: 1px solid var(--color-sand);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  height: fit-content;
+}
+.order-box .line {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.order-box .grand {
+  border-top: 1px solid var(--color-sand);
+  margin-top: var(--space-1);
+  padding-top: var(--space-1);
+  font-weight: 600;
+}
+.error { color: #b00020; margin-bottom: var(--space-2); }
